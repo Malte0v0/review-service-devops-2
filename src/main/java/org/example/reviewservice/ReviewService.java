@@ -57,7 +57,9 @@ public class ReviewService {
     public List<ReviewResponseDTO> findByCustomerId(long customerId) {
         log.info("Finding reviews by customer ID {}", customerId);
         List<ReviewEntity> reviews = reviewRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new ReviewNotFoundException("Could not find reviews from customer " + customerId));
+                .orElseThrow(() -> {log.warn("No reviews found by customer ID {}", customerId);
+                        return new ReviewNotFoundException("Could not find reviews from customer " + customerId);
+                });
 
         List<ReviewResponseDTO> responseDTOS = new ArrayList<>();
 
