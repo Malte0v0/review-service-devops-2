@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 public class ReviewService {
+    private static final Logger log = LoggerFactory.getLogger(ReviewService.class);
     private final ReviewRepository reviewRepository;
     private final CustomerClient customerClient;
     private final BookingClient bookingClient;
@@ -46,6 +47,7 @@ public class ReviewService {
     }
 
     public List<ReviewResponseDTO> findAll() {
+        log.info("Finding all reviews");
         return reviewRepository.findAll()
                 .stream()
                 .map(this::toDTO)
@@ -53,6 +55,7 @@ public class ReviewService {
     }
 
     public List<ReviewResponseDTO> findByCustomerId(long customerId) {
+        log.info("Finding reviews by customer ID {}", customerId);
         List<ReviewEntity> reviews = reviewRepository.findByCustomerId(customerId)
                 .orElseThrow(() -> new ReviewNotFoundException("Could not find reviews from customer " + customerId));
 
