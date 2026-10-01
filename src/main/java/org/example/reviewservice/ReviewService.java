@@ -71,8 +71,11 @@ public class ReviewService {
     }
 
     public List<ReviewResponseDTO> findByRoomId(long roomId) {
+        log.info("Finding reviews by room ID {}", roomId);
         List<ReviewEntity> reviews = reviewRepository.findByRoomId(roomId)
-                .orElseThrow(() -> new ReviewNotFoundException("Could not find reviews of room " + roomId));
+                .orElseThrow(() -> { log.warn("No reviews found by room ID {}", roomId);
+                    return new ReviewNotFoundException("Could not find reviews of room " + roomId);
+                });
 
         List<ReviewResponseDTO> responseDTOS = new ArrayList<>();
 
@@ -91,6 +94,7 @@ public class ReviewService {
                 throw new InvalidReviewDataException("The customer with id " + dto.getCustomerId() + " does not exist");
             }
         } catch (HttpServerErrorException | ResourceAccessException exception) {
+            log.error("Error while creating the review", exception);
             throw new CustomerServiceUnavailableException("The service is unavailable. Try again later.");
         }
 
@@ -100,8 +104,11 @@ public class ReviewService {
     }
 
     public ReviewResponseDTO update(long id, ReviewCreateDTO dto) {
+        log.info("Updating review with id {}", id);
         ReviewEntity review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ReviewNotFoundException("Review with id " + id + " was not found"));
+                .orElseThrow(() -> {log.warn("Could not find review with id {}", id);
+                    return new ReviewNotFoundException("Review with id " + id + " was not found");}
+                );
 
         review.setReviewText(dto.getReviewText());
         review.setReviewDate(dto.getReviewDate());
@@ -114,6 +121,7 @@ public class ReviewService {
     }
 
     public void delete(long id) {
+        log.info("Deleting review with id={}", id);
         reviewRepository.deleteById(id);
     }
 }
