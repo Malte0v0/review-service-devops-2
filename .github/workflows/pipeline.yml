@@ -2,9 +2,9 @@ name: Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [add-staging-and-production-environments]
   pull_request:
-    branches: [main]
+    branches: [add-staging-and-production-environments]
 
 jobs:
   build:
