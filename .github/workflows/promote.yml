@@ -1,9 +1,7 @@
 name: promote.yml
 on:
   workflow_dispatch:
-  push:
-    branches: [add-staging-and-production-environments]
-    
+
 jobs:
   promote:
     runs-on: [ubuntu-latest]
