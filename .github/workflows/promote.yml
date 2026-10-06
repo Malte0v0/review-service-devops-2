@@ -1,0 +1,25 @@
+name: promote.yml
+on:
+  workflow_dispatch:
+  push:
+    branches: [add-staging-and-production-environments]
+    
+jobs:
+  promote:
+    runs-on: [ubuntu-latest]
+    environment: production
+    steps:
+    - name: Login to Dockerhub
+      run: echo ${{secrets.DOCKERHUB_TOKEN}} | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+
+    - name: pull image
+      run: |
+        docker pull ${{secrets.DOCKERHUB_USERNAME}}/review-service:staging
+
+    - name: retag image
+      run: |
+        docker tag ${{secrets.DOCKERHUB_USERNAME}}/review-service:staging ${{secrets.DOCKERHUB_USERNAME}}/review-service:production
+
+    - name: push image
+      run: |
+        docker push ${{secrets.DOCKERHUB_USERNAME}}/review-service:production
