@@ -53,7 +53,7 @@ jobs:
     - name: build image
       if: github.event_name == 'push'
       run: |
-        docker build -t ${{secrets.DOCKERHUB_USERNAME}}/review-service:${{github.run_number}} .
+        docker build -t ${{secrets.DOCKERHUB_USERNAME}}/review-service:${{github.run_number}}:staging .
 
     - name: push to docker hub
       if: github.event_name == 'push'
