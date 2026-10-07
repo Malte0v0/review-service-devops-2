@@ -2,6 +2,10 @@
 
 En Spring Boot-tjänst för recensioner av rum.
 
+Production: https://review-service-devops-production-production.up.railway.app/
+
+Staging: https://review-service-staging.up.railway.app/
+
 ####Teknik#####
 - Java 17, Spring Boot, Maven 
 - MariaDB
@@ -111,7 +115,7 @@ Vi hade ingen merge konflikt eftersom vi arbetade inom olika områden.
 Om vi hade haft en merge konflikt så hade den varit lätt att lösa genom GitHub's egna verktyg för det.
 
 
-
 Gruppmedlemmar
+
 Simon
 Malte
