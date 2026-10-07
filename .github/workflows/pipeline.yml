@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        java: [27]
+        java: [17]
 
     services:
       mariadb:
