@@ -1,23 +1,30 @@
 name: promote.yml
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Git SHA to promote to production"
+        required: true
+        type: string
 
 jobs:
   promote:
     runs-on: [ubuntu-latest]
     environment: production
     steps:
-    - name: Login to Dockerhub
-      run: echo ${{secrets.DOCKERHUB_TOKEN}} | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+      - run: echo "Promoting ${{inputs.version}}"
 
-    - name: pull image
-      run: |
-        docker pull ${{secrets.DOCKERHUB_USERNAME}}/review-service:staging
+      - name: Login to Dockerhub
+        run: echo ${{secrets.DOCKERHUB_TOKEN}} | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
 
-    - name: retag image
-      run: |
-        docker tag ${{secrets.DOCKERHUB_USERNAME}}/review-service:staging ${{secrets.DOCKERHUB_USERNAME}}/review-service:production
+      - name: pull image
+        run: |
+          docker pull ${{secrets.DOCKERHUB_USERNAME}}/review-service:${{inputs.version}}
 
-    - name: push image
-      run: |
-        docker push ${{secrets.DOCKERHUB_USERNAME}}/review-service:production
+      - name: retag image
+        run: |
+          docker tag ${{secrets.DOCKERHUB_USERNAME}}/review-service:${{inputs.version}} ${{secrets.DOCKERHUB_USERNAME}}/review-service:production
+
+      - name: push image
+        run: |
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/review-service:production
