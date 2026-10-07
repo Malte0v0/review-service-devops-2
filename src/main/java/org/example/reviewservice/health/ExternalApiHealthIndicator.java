@@ -25,8 +25,8 @@ public class ExternalApiHealthIndicator implements HealthIndicator {
             @Value("${external.api.url:https://www.githubstatus.com/api/v2/status.json}") String url) {
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        //factory.setConnectTimeout(Duration.ofSeconds(2));
-        //factory.setReadTimeout(Duration.ofSeconds(2));
+        factory.setConnectTimeout(Duration.ofSeconds(2));
+        factory.setReadTimeout(Duration.ofSeconds(2));
         this.url = url;
         this.restClient = RestClient.builder()
                 .requestFactory(factory)
